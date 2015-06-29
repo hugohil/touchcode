@@ -39,8 +39,11 @@ Touchcode.prototype.init = function(sequence, padding, callback){
       self.counter = 0;
     }
   }
-  document.body.addEventListener('touchstart', detect, true);
-  document.body.addEventListener('click', detect, true);
+  if(('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)){
+    document.body.addEventListener('touchstart', detect, true);
+  } else {
+    document.body.addEventListener('click', detect, true);
+  }
 }
 
 /**
