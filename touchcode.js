@@ -16,9 +16,15 @@ Touchcode.prototype.init = function(sequence, callback){
   self.counter = 0;
   self.sequence = sequence;
   self.cb = callback;
-  document.body.addEventListener('click', function(event){
-    var x = event.clientX;
-    var y = event.clientY;
+  var detect = function(event){
+    var x, y;
+    if(event instanceof TouchEvent){
+      x = event.touches[0].clientX;
+      y = event.touches[0].clientY;
+    } else {
+      x = event.clientX;
+      y = event.clientY;
+    }
     var zone = self.zone(x, y);
     console.log('touchcode.js:23 - ', zone);
     if(sequence[self.counter] == zone){
@@ -30,7 +36,9 @@ Touchcode.prototype.init = function(sequence, callback){
     } else {
       self.counter = 0;
     }
-  });
+  }
+  document.body.addEventListener('touchstart', detect, true);
+  document.body.addEventListener('click', detect, true);
 }
 
 /**
